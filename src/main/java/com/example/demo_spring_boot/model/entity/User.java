@@ -3,15 +3,14 @@ package com.example.demo_spring_boot.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +23,11 @@ public class User {
   private String email;
   private String refreshToken;
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles = new HashSet<>();
+  @ManyToMany
+  @JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+  private List<Role> roles;
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "user_groups", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
-  private Set<Group> groups = new HashSet<>();
+  @ManyToMany
+  @JoinTable(name = "USER_GROUPS", joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "GROUP_ID"))
+  private List<Group> groups;
 }

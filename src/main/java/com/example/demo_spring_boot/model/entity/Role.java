@@ -3,15 +3,14 @@ package com.example.demo_spring_boot.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles")
+@Table(name = "ROLES")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +21,15 @@ public class Role {
 
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "role_permissions",
-        joinColumns = @JoinColumn(name = "role_id"),
-        inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "ROLE_PERMISSIONS", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "PERMISSION_ID"))
+    private List<Permission> permissions;
+
+    @ManyToMany
+    @JoinTable(name = "GROUP_ROLES", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "GROUP_ID"))
+    private List<Group> groups;
+
+    @ManyToMany
+    @JoinTable(name = "USER_ROLES", joinColumns = @JoinColumn(name = "ROLE_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
+    private List<User> users;
 }
