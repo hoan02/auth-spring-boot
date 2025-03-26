@@ -1,38 +1,33 @@
 package com.example.demo_spring_boot.config;
 
-import java.util.List;
-
+import com.example.demo_spring_boot.service.impl.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.demo_spring_boot.service.UserService;
-
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
-  private final UserService userService;
 
-  public SecurityConfig(UserService userService) {
-    this.userService = userService;
-  }
+  @Autowired
+  private UserDetailsServiceImpl userDetailsService;
 
   @Bean
-  public AuthenticationManager authenticationManager() {
-    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setUserDetailsService(userService);
-    authProvider.setPasswordEncoder(passwordEncoder());
-    return new ProviderManager(List.of(authProvider));
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
+    http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/auth/**").permitAll()
@@ -40,10 +35,17 @@ public class SecurityConfig {
             .requestMatchers("/user/**").hasRole("USER")
             .anyRequest().authenticated())
         .build();
+    return http.build();
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+  public UserDetailsService userDetailsService() {
+    return userDetailsService;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
   }
 }

@@ -1,8 +1,18 @@
 package com.example.demo_spring_boot.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-import com.example.demo_spring_boot.model.entity.User;
+import java.util.List;
 
-public interface UserService extends UserDetailsService {
-  User registerUser(String username, String password, String email);
+import com.example.demo_spring_boot.dto.UserDto;
+
+public interface UserService {
+
+  List<UserDto> getAllUsers();
+
+  UserDto getUserById(Long id);
+
+  UserDto createUser(UserDto userDto);
+
+  UserDto updateUser(Long id, UserDto userDto);
+
+  void deleteUser(Long id);
 }

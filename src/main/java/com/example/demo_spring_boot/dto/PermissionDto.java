@@ -5,11 +5,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GroupDto {
+public class PermissionDto {
   private Long id;
   private String name;
 
-  public GroupDto(Long id, String name) {
+  public PermissionDto(Long id, String name) {
     this.id = id;
     this.name = name;
   }

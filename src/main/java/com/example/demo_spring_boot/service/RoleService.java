@@ -1,10 +1,18 @@
 package com.example.demo_spring_boot.service;
 
-import java.util.Optional;
+import com.example.demo_spring_boot.dto.RoleDto;
 
-import com.example.demo_spring_boot.model.entity.Role;
+import java.util.List;
 
 public interface RoleService {
-  Role createRole(String name, String description);
-  Optional<Role> getRoleByName(String name);
+
+    List<RoleDto> getAllRoles();
+
+    RoleDto getRoleById(Long id);
+
+    RoleDto createRole(RoleDto roleDto);
+
+    RoleDto updateRole(Long id, RoleDto roleDto);
+
+    void deleteRole(Long id);
 }

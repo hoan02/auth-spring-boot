@@ -1,10 +1,18 @@
 package com.example.demo_spring_boot.service;
 
-import java.util.Optional;
+import com.example.demo_spring_boot.dto.GroupDto;
 
-import com.example.demo_spring_boot.model.entity.Group;
+import java.util.List;
 
 public interface GroupService {
-  Group createGroup(String name, String description);
-  Optional<Group> getGroupByName(String name);
+
+    List<GroupDto> getAllGroups();
+
+    GroupDto getGroupById(Long id);
+
+    GroupDto createGroup(GroupDto groupDto);
+
+    GroupDto updateGroup(Long id, GroupDto groupDto);
+
+    void deleteGroup(Long id);
 }
