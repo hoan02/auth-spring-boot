@@ -27,3 +27,10 @@ spring:
       serialization:
         indent-output: true
 
+jwt:
+  secret-key: "myverysecretkeymyverysecretkeymyverysecretkey"
+  access-token:
+    expiration: 3600000 # 1 giờ (milliseconds)
+  refresh-token:
+    expiration: 604800 # 7 ngày (milliseconds)
+  issuer: "demo-spring-boot" # Tên ứng dụng của bạn
