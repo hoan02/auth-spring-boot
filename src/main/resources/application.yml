@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: demo-spring-boot
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1521/MYPDB
+    username: hoan
+    password: 123456
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        oracle.jdbc.fanEnabled: false
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: update
+    jackson:
+      serialization:
+        indent-output: true
+
