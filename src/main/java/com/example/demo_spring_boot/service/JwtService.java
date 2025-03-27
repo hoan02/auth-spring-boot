@@ -2,12 +2,18 @@ package com.example.demo_spring_boot.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 public interface JwtService {
-  String generateToken(UserDetails userDetails);
+  String generateAccessToken(UserDetails userDetails);
+
+  String generateRefreshToken(UserDetails userDetails);
 
   boolean validateToken(String token, UserDetails userDetails);
 
   String extractUsername(String token);
 
-  String generateRefreshToken(UserDetails userDetails);
+  boolean validateTokenStructure(String token);
+
+  String getRefreshTokenFromRequest(HttpServletRequest request);
 }

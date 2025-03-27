@@ -28,9 +28,9 @@ spring:
         indent-output: true
 
 jwt:
-  secret-key: "myverysecretkeymyverysecretkeymyverysecretkey"
+  secret-key: "AAk1kkDvdk18VsNW1JpaWzzNGRkLw5sI"
   access-token:
     expiration: 3600000 # 1 giờ (milliseconds)
   refresh-token:
-    expiration: 604800 # 7 ngày (milliseconds)
+    expiration: 604800000 # 7 ngày (milliseconds)
   issuer: "demo-spring-boot" # Tên ứng dụng của bạn

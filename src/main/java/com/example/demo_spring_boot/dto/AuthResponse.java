@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthResponse {
-  private String accessToken;
+  private String token;
   private String tokenType = "Bearer";
 
-  public AuthResponse(String accessToken) {
-    this.accessToken = accessToken;
+  public AuthResponse(String token) {
+    this.token = token;
   }
 }

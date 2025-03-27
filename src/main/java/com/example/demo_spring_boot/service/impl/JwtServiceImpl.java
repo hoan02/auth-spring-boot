@@ -1,9 +1,13 @@
 package com.example.demo_spring_boot.service.impl;
 
+import com.example.demo_spring_boot.constant.CookieConfig;
 import com.example.demo_spring_boot.service.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +43,7 @@ public class JwtServiceImpl implements JwtService {
   }
 
   @Override
-  public String generateToken(UserDetails userDetails) {
+  public String generateAccessToken(UserDetails userDetails) {
     return buildToken(userDetails.getUsername(), accessTokenExpiration);
   }
 
@@ -106,5 +110,11 @@ public class JwtServiceImpl implements JwtService {
       logger.error("JWT claims string is empty: {}", ex.getMessage());
     }
     return false;
+  }
+
+  @Override
+  public String getRefreshTokenFromRequest(HttpServletRequest request) {
+    String refreshToken = request.getHeader("refresh-token");
+    return refreshToken;
   }
 }
