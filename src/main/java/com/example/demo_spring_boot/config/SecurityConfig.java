@@ -11,13 +11,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-
-import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -62,9 +60,7 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .anyRequest().authenticated())
         .sessionManagement(session -> session
-            .sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS))
-        .exceptionHandling(exception -> exception
-            .accessDeniedHandler(accessDeniedHandler()))
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider());
     return http.build();
   }
@@ -75,12 +71,5 @@ public class SecurityConfig {
         HttpMethod.OPTIONS,
         "/v3/api-docs/**", "/configuration/**", "/swagger-ui/**",
         "/swagger-resources/**", "/swagger-ui.html", "/actuator/prometheus/**");
-  }
-
-  @Bean
-  public AccessDeniedHandler accessDeniedHandler() {
-    return (request, response, accessDeniedException) -> {
-      response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
-    };
   }
 }

@@ -26,6 +26,9 @@ spring:
     jackson:
       serialization:
         indent-output: true
+  redis:
+    host: localhost
+    port: 6379
 
 jwt:
   secret-key: "AAk1kkDvdk18VsNW1JpaWzzNGRkLw5sI"

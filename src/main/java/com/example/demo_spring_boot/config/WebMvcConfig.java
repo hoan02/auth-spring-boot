@@ -18,6 +18,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(refreshTokenInterceptor)
         .addPathPatterns("/api/**") // chỉ gắn cookie cho đường này
-        .excludePathPatterns("/api/auth/register"); // loại trừ đường dẫn
+        .excludePathPatterns("/api/auth/login/**", "/api/auth/register/**"); // loại trừ đường dẫn
   }
 }

@@ -1,11 +1,9 @@
 package com.example.demo_spring_boot.service.impl;
 
-import com.example.demo_spring_boot.constant.CookieConfig;
 import com.example.demo_spring_boot.service.JwtService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
