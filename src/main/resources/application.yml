@@ -1,39 +1,45 @@
 server:
-  port: 8080
+  port: 8080 # Cấu hình cổng chạy ứng dụng (mặc định là 8080)
 
 spring:
   application:
-    name: demo-spring-boot
+    name: demo-spring-boot # Tên ứng dụng (có thể dùng để nhận diện trong logging hoặc monitoring)
+
   data:
     jpa:
       repositories:
-        bootstrap-mode: deferred
-  datasource:
-    url: jdbc:oracle:thin:@//localhost:1521/MYPDB
-    username: hoan
-    password: 123456
-    driver-class-name: oracle.jdbc.OracleDriver
-    hikari:
-      poolName: Hikari
-      auto-commit: false
+        bootstrap-mode: deferred # Trì hoãn khởi tạo Repository để cải thiện thời gian khởi động ứng dụng
+
+  datasource: # Cấu hình kết nối cơ sở dữ liệu
+    url: jdbc:oracle:thin:@//localhost:1521/MYPDB # Đường dẫn JDBC kết nối tới Oracle DB
+    username: hoan # Tên đăng nhập vào database
+    password: 123456 # Mật khẩu đăng nhập vào database
+    driver-class-name: oracle.jdbc.OracleDriver # Driver sử dụng cho Oracle Database
+
+    hikari: # Cấu hình HikariCP (Connection Pool)
+      poolName: Hikari # Tên pool kết nối
+      auto-commit: false # Tắt chế độ auto-commit, giúp kiểm soát transaction tốt hơn
       data-source-properties:
-        oracle.jdbc.fanEnabled: false
+        oracle.jdbc.fanEnabled: false # Tắt Oracle Fast Application Notification (FAN), giúp giảm độ phức tạp trong một số trường hợp
+
   jpa:
-    open-in-view: false
-    database-platform: org.hibernate.dialect.OracleDialect
+    open-in-view: false # Vô hiệu hóa Open EntityManager trong View, giúp tránh lỗi LazyInitializationException
+    database-platform: org.hibernate.dialect.OracleDialect # Chỉ định Hibernate Dialect cho Oracle Database
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # Tự động cập nhật schema (nên dùng `validate` hoặc `none` trong production)
     jackson:
       serialization:
-        indent-output: true
-  redis:
-    host: localhost
-    port: 6379
+        indent-output: true # Định dạng JSON trả về có thụt lề đẹp hơn (dễ đọc)
+
+  redis: # Cấu hình Redis Cache
+    host: localhost # Địa chỉ Redis Server
+    port: 6379 # Cổng mặc định của Redis
+    enabled: true
 
 jwt:
-  secret-key: "AAk1kkDvdk18VsNW1JpaWzzNGRkLw5sI"
+  secret-key: "AAk1kkDvdk18VsNW1JpaWzzNGRkLw5sI" # Khóa bí mật để mã hóa JWT Token
   access-token:
-    expiration: 3600000 # 1 giờ (milliseconds)
+    expiration: 900000 # Thời gian hết hạn của Access Token (15 phút) - tính theo milliseconds
   refresh-token:
-    expiration: 604800000 # 7 ngày (milliseconds)
-  issuer: "demo-spring-boot" # Tên ứng dụng của bạn
+    expiration: 604800000 # Thời gian hết hạn của Refresh Token (7 ngày) - tính theo milliseconds
+  issuer: "demo-spring-boot" # Người phát hành JWT (thường là tên ứng dụng)

@@ -11,4 +11,6 @@ public interface AuthService {
     AuthResultDto authenticate(AuthRequest authRequest, HttpServletRequest request);
 
     AuthResponse refreshToken(String refreshToken, HttpServletRequest request);
+
+    void logout(String token);
 }

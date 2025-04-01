@@ -109,10 +109,4 @@ public class JwtServiceImpl implements JwtService {
     }
     return false;
   }
-
-  @Override
-  public String getRefreshTokenFromRequest(HttpServletRequest request) {
-    String refreshToken = request.getHeader("refresh-token");
-    return refreshToken;
-  }
 }

@@ -35,7 +35,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow();
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException("Không tìm thấy: " + username));
         List<Role> roles = roleRepository.findByUser(user);
         List<Group> groups = groupRepository.findByUser(user);
         List<Permission> permissions = permissionRepository.findByUser(user);
@@ -51,6 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(permission.getName()));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                authorities);
     }
 }

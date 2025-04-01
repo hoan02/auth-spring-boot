@@ -14,6 +14,7 @@ import com.example.demo_spring_boot.dto.UserDto;
 import com.example.demo_spring_boot.model.entity.User;
 import com.example.demo_spring_boot.repository.UserRepository;
 import com.example.demo_spring_boot.service.UserService;
+import com.example.demo_spring_boot.service.async.EmailService;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -53,20 +57,32 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        // Gửi email xác nhận
+        emailService.sendEmail(userDto.getEmail(), "Đăng ký thành công", "Chào mừng bạn đến với...");
         return new UserDto(userRepository.save(user).getId(), user.getUsername(), user.getEmail(), user.getPassword());
     }
 
     @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
+    public UserDto updateUser(Long id, UserDto userUpdateDto) {
         User user = userRepository.findById(id).orElseThrow();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userUpdateDto.getUsername() != null) {
+            user.setUsername(userUpdateDto.getUsername());
+        }
+        if (userUpdateDto.getEmail() != null) {
+            user.setEmail(userUpdateDto.getEmail());
+        }
+        if (userUpdateDto.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(userUpdateDto.getPassword()));
+        }
         return new UserDto(userRepository.save(user).getId(), user.getUsername(), user.getEmail(), user.getPassword());
     }
 
     @Override
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User không tồn tại");
+        }
         userRepository.deleteById(id);
     }
 }

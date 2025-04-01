@@ -5,7 +5,9 @@ import com.example.demo_spring_boot.dto.AuthResponse;
 import com.example.demo_spring_boot.dto.AuthResultDto;
 import com.example.demo_spring_boot.dto.UserDto;
 import com.example.demo_spring_boot.service.AuthService;
+import com.example.demo_spring_boot.service.JwtService;
 import com.example.demo_spring_boot.service.UserService;
+import com.example.demo_spring_boot.service.async.EmailService;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,8 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthService authService;
-    private final UserService userService;
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
 
     @Autowired
     public AuthController(AuthService authService, UserService userService) {
@@ -41,6 +49,12 @@ public class AuthController {
         response.addCookie(authResult.getRefreshTokenCookie());
         // Chỉ trả về access token
         return ResponseEntity.ok(new AuthResponse(authResult.getAccessToken()));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@CookieValue("refresh-token") String refreshToken, HttpServletRequest request) {
+        authService.logout(refreshToken);
+        return ResponseEntity.noContent().build();
     }
 
     @PermitAll
