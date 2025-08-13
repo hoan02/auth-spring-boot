@@ -1,5 +1,5 @@
 server:
-  port: 8080 # Cấu hình cổng chạy ứng dụng (mặc định là 8080)
+  port: 7999 # Cấu hình cổng chạy ứng dụng (mặc định là 8080)
 
 spring:
   application:
@@ -9,10 +9,14 @@ spring:
     jpa:
       repositories:
         bootstrap-mode: deferred # Trì hoãn khởi tạo Repository để cải thiện thời gian khởi động ứng dụng
+    redis:
+      host: localhost # Địa chỉ Redis Server
+      port: 6379 # Cổng mặc định của Redis
+      enabled: true
 
   datasource: # Cấu hình kết nối cơ sở dữ liệu
     url: jdbc:oracle:thin:@//localhost:1521/MYPDB # Đường dẫn JDBC kết nối tới Oracle DB
-    username: hoan # Tên đăng nhập vào database
+    username: system # Tên đăng nhập vào database
     password: 123456 # Mật khẩu đăng nhập vào database
     driver-class-name: oracle.jdbc.OracleDriver # Driver sử dụng cho Oracle Database
 
@@ -30,11 +34,6 @@ spring:
     jackson:
       serialization:
         indent-output: true # Định dạng JSON trả về có thụt lề đẹp hơn (dễ đọc)
-
-  redis: # Cấu hình Redis Cache
-    host: localhost # Địa chỉ Redis Server
-    port: 6379 # Cổng mặc định của Redis
-    enabled: true
 
 jwt:
   secret-key: "AAk1kkDvdk18VsNW1JpaWzzNGRkLw5sI" # Khóa bí mật để mã hóa JWT Token

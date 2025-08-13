@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: auth-service
+data:
+  application.yml: |
+    server:
+      port: 7999
+    
+    spring:
+      application:
+        name: demo-spring-boot
+      
+      data:
+        jpa:
+          repositories:
+            bootstrap-mode: deferred
+        redis:
+          host: redis-service
+          port: 6379
+          enabled: true
+      
+      datasource:
+        url: jdbc:oracle:thin:@//oracle-service:1521/MYPDB
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+        driver-class-name: oracle.jdbc.OracleDriver
+      
+      jpa:
+        open-in-view: false
+        database-platform: org.hibernate.dialect.OracleDialect
+        hibernate:
+          ddl-auto: update
+    
+    jwt:
+      secret-key: ${JWT_SECRET}
+      access-token:
+        expiration: 900000
+      refresh-token:
+        expiration: 604800000
+      issuer: "demo-spring-boot"

@@ -6,6 +6,6 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 
 @Configuration
 @EnableRedisRepositories
-@ConditionalOnProperty(name = "spring.redis.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "spring.data.redis.enabled", havingValue = "true")
 public class RedisConfig {
 }
